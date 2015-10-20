@@ -1,0 +1,51 @@
+#include<stdio.h>
+
+int hcd(int *vals, int length) {
+	if (length==2) {
+		int m,n;
+		m = vals[0];
+		n = vals[1];
+		while (m > 0) {
+			int temp = n;
+			n = m % n;
+			m = temp;
+		}
+		return m;
+	}
+	else if (length > 2) {
+		int vals2[2];
+		vals2[0]=vals[0];
+		vals2[1]=hcd((vals + 1),length-1);
+		return hcd(vals2,2);
+	}
+	else return -1;
+}
+
+int main(int argc, char *argv[]) {
+	if (argc<=2) {
+		return 1;
+	}
+	else {
+		int highest, i;
+		int *nums;
+
+		nums = (int*)calloc(argc-1,sizeof(int));
+		
+		for (i = 1; i < argc; i++) {
+			*(nums + i - 1) = atoi(argv[i]);
+		}
+		highest = hcd(nums,argc-1);
+		if( highest>0) {
+			int i, n, sum;
+			sum = 0;
+			n = argc - 1;
+		   	for (i=0; i < n; i++) {
+				sum += argv[i+1];
+			}
+			printf("%i %i\n",highest,sum);
+		}
+		else return 1;
+	}
+
+	return 0;
+}
